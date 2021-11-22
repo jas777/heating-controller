@@ -1,0 +1,8 @@
+{
+  "name": "heating-controller",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/jas777/heating-controller",
+  "author": "jas777 <jas.czeszejko@wp.pl>",
+  "license": "MIT"
+}
