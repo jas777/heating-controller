@@ -4,5 +4,15 @@
   "main": "index.js",
   "repository": "https://github.com/jas777/heating-controller",
   "author": "jas777 <jas.czeszejko@wp.pl>",
-  "license": "MIT"
+  "license": "MIT",
+  "scripts": {
+    "start": "node ./dist/index.js",
+    "compile": "tsc"
+  },
+  "devDependencies": {
+    "typescript": "^4.5.2"
+  },
+  "dependencies": {
+    "onoff": "^6.0.3"
+  }
 }
