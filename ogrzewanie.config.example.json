@@ -1,0 +1,9 @@
+{
+    "heaters": [
+        {
+            "name": "Salon",
+            "gpio": 2,
+            "active": "low"
+        }
+    ]
+}

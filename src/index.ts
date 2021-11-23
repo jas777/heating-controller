@@ -1,17 +1,24 @@
-import { Gpio } from "onoff";
+import { loadConfig } from "./config/Configuration";
+import Heater, { isHeaterNode } from "./heater/Heater";
 
-const outputs = [] as Gpio[];
+const heaters = [] as Heater[];
 
-for (let i = 0; i < 10; i++) {
-    outputs.push(new Gpio(i, 'out'))
-}
+const main = async () => {
+    const config = await loadConfig();
 
-outputs.forEach(out => {
-    out.write(0);
-})
+    if (!config) {
+        console.log("Nieprawidłowa konfiguracja!");
+        process.exit(1);
+    }
 
-setTimeout(() => {
-    outputs.forEach(out => {
-        out.write(1);
-    })
-}, 3000)
+    config.heaters.forEach((heaterNode) => {
+        if (!isHeaterNode(heaterNode)) {
+            console.log("Nieprawidłowa konfiguracja!");
+            process.exit(1);
+        } else {
+            heaters.push(new Heater(heaterNode.name, heaterNode.gpio, heaterNode.active))
+        }
+    });
+};
+
+main();
