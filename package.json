@@ -16,6 +16,7 @@
     "@types/node": "^16.11.9",
     "confinode": "^2.1.1",
     "fastify": "^3.24.0",
+    "fastify-cors": "^6.0.2",
     "onoff": "^6.0.3"
   }
 }

@@ -26,6 +26,10 @@ export default class Heater {
         this._gpio.write(this.active == 0 ? 1 : 0)
     }
 
+    unregister(): void {
+        this._gpio.unexport()
+    }
+
 }
 
 export const isHeaterNode = (node: any): node is HeaterNode => {
