@@ -69,6 +69,10 @@ export const startServer = async (config: Configuration, heaters: Heater[]) => {
         res.code(200).send(JSON.stringify(config));
     });
 
+    app.get('inloop', (_req, res) => {
+        res.code(200).send({ in_loop: heatersAuto });
+    })
+
     app.listen(2137, '0.0.0.0', (err: any, addr: string) => {
         if (err) {
             console.error(err);
