@@ -8,6 +8,8 @@ import {
 } from "confinode";
 
 export default interface Configuration {
+    interval: number;
+    duration: number;
     heaters: HeaterNode[];
 }
 
@@ -19,6 +21,8 @@ export interface HeaterNode {
 
 export const loadConfig = async (): Promise<Configuration | undefined> => {
     const description = literal<Configuration>({
+        interval: numberItem(10000),
+        duration: numberItem(30000),
         heaters: array(
             literal<HeaterNode>({
                 name: stringItem(),

@@ -1,12 +1,13 @@
 import fastify from "fastify";
 import Heater from "./Heater";
+import Configuration from "../config/Configuration";
 
 let allHeaters: undefined | Map<number, Heater>;
 let loop: undefined | NodeJS.Timer;
 let heatersAuto = [] as number[];
 let heatersManual = [] as number[];
 
-export const startServer = async (heaters: Heater[]) => {
+export const startServer = async (config: Configuration, heaters: Heater[]) => {
 
     allHeaters = new Map<number, Heater>(heaters.map(h => [h.gpio, h]));
 
@@ -37,7 +38,7 @@ export const startServer = async (heaters: Heater[]) => {
         if (allHeaters!!.has(gpio)) {
             heatersAuto = heatersAuto.filter(h => h != gpio);
             allHeaters!!.get(gpio)?.disable();
-            heatersManual.includes(gpio) ? null : heatersManual.push(gpio);
+            heatersManual.includes(gpio) ? () => {} : () => heatersManual.push(gpio);
             res.code(200).send('OK');
             app.log.info(`Removed heater ${gpio} from auto loop and force-disabled`);
         } else {
@@ -54,7 +55,7 @@ export const startServer = async (heaters: Heater[]) => {
         if (allHeaters!!.has(gpio)) {
             heatersAuto = heatersAuto.filter(h => h != gpio);
             allHeaters!!.get(gpio)?.enable();
-            heatersManual.includes(gpio) ? null : heatersManual.push(gpio);
+            heatersManual.includes(gpio) ? () => {} : () => heatersManual.push(gpio);
             res.code(200).send('OK');
             app.log.info(`Removed heater ${gpio} from auto loop and force-enabled`);
         } else {
@@ -62,6 +63,10 @@ export const startServer = async (heaters: Heater[]) => {
             return;
         }
 
+    });
+
+    app.get('/config', (_req, res) => {
+        res.code(200).send(JSON.stringify(config));
     });
 
     app.listen(2137, '0.0.0.0', (err: any, addr: string) => {

@@ -21,7 +21,7 @@ const main = async () => {
         }
     });
 
-    startServer(heaters);
+    await startServer(config, heaters);
 };
 
 process.on('SIGINT', () => {
