@@ -77,7 +77,7 @@ export const startServer = async (config: Configuration, heaters: Heater[]) => {
         app.log.info(`Server listening on ${addr}`);
     });
 
-    startLoop(10000, 2000);
+    startLoop(config.interval, config.duration);
 
 };
 
