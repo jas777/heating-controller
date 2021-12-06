@@ -65,8 +65,31 @@ export const startServer = async (config: Configuration, heaters: Heater[]) => {
 
     });
 
+    app.post('/toggle/:io', (req, res) => {
+        const gpio = Number.parseInt((req.params as any).io);
+
+        if (allHeaters!!.has(gpio)) {
+            if (heatersAuto.includes(gpio)) {
+                heatersAuto = heatersAuto.filter(h => h != gpio);
+                heatersManual.push(gpio);
+            } else {
+                heatersManual = heatersManual.filter(h => h != gpio);
+                heatersAuto.push(gpio);
+            }
+
+            res.code(200).send({
+                success: true,
+                auto: heatersAuto.includes(gpio)
+            })
+        }
+
+        res.code(404).send({
+            message: 'Heater not found!'
+        });
+    })
+
     app.get('/config', (_req, res) => {
-        res.code(200).send(JSON.stringify(config));
+        res.code(200).send(config);
     });
 
     app.get('/inloop', (_req, res) => {

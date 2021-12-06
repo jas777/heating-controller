@@ -7,15 +7,19 @@ export default class Heater {
     public gpio: number;
     public active: BinaryValue;
 
-    private _gpio: Gpio;
+    private _gpio: Gpio = {
+        write: (num: number) => {
+            console.log(num)
+        }
+    } as Gpio;
 
     constructor(name: string, gpio: number, active: 'high' | 'low') {
         this.name = name;
         this.gpio = gpio;
-        this._gpio = new Gpio(gpio, 'out');
+        // this._gpio = new Gpio(gpio, 'out');
         this.active = active == 'low' ? 0 : 1;
 
-        this.disable();
+        // this.disable();
     }
 
     enable(): void {
