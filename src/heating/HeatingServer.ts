@@ -26,7 +26,7 @@ export const startServer = async (config: Configuration, heaters: Heater[]) => {
 
     app.addContentTypeParser(
         "application/json",
-        { parseAs: "string" },
+        {parseAs: "string"},
         function (_req, body, done) {
             try {
                 const json = JSON.parse(body as string);
@@ -45,11 +45,12 @@ export const startServer = async (config: Configuration, heaters: Heater[]) => {
         if (allHeaters!!.has(gpio)) {
             heatersAuto = heatersAuto.filter(h => h != gpio);
             allHeaters!!.get(gpio)?.disable();
-            heatersManual.includes(gpio) ? () => {} : () => heatersManual.push(gpio);
+            heatersManual.includes(gpio) ? () => {
+            } : () => heatersManual.push(gpio);
             res.code(200).send('OK');
             app.log.info(`Removed heater ${gpio} from auto loop and force-disabled`);
         } else {
-            res.code(404).send({ message: 'Heater not found!' });
+            res.code(404).send({message: 'Heater not found!'});
             return;
         }
 
@@ -62,11 +63,12 @@ export const startServer = async (config: Configuration, heaters: Heater[]) => {
         if (allHeaters!!.has(gpio)) {
             heatersAuto = heatersAuto.filter(h => h != gpio);
             allHeaters!!.get(gpio)?.enable();
-            heatersManual.includes(gpio) ? () => {} : () => heatersManual.push(gpio);
+            heatersManual.includes(gpio) ? () => {
+            } : () => heatersManual.push(gpio);
             res.code(200).send('OK');
             app.log.info(`Removed heater ${gpio} from auto loop and force-enabled`);
         } else {
-            res.code(404).send({ message: 'Heater not found!' });
+            res.code(404).send({message: 'Heater not found!'});
             return;
         }
 
@@ -100,8 +102,12 @@ export const startServer = async (config: Configuration, heaters: Heater[]) => {
         const data = req.body as ConfigDTO;
 
         if (data) {
-            config.interval = data.interval as number;
-            config.duration = data.duration as number;
+
+            if (data.duration > data.interval)
+                res.code(400).send({message: 'Duration longer than interval!'})
+
+            config.interval = data.interval * 1000 * 60;
+            config.duration = data.duration * 1000 * 60;
 
             fs.writeFileSync(Path.resolve('ogrzewanie.config.json'), JSON.stringify(config, null, 4));
 
@@ -110,7 +116,7 @@ export const startServer = async (config: Configuration, heaters: Heater[]) => {
 
             res.code(200).send('OK');
         } else {
-            res.code(400).send({ message: 'Invalid config data' });
+            res.code(400).send({message: 'Invalid config data'});
         }
 
     });
@@ -120,13 +126,13 @@ export const startServer = async (config: Configuration, heaters: Heater[]) => {
     });
 
     app.get('/inloop', (_req, res) => {
-        res.code(200).send({ in_loop: heatersAuto });
+        res.code(200).send({in_loop: heatersAuto});
     })
 
     app.listen(2137, '0.0.0.0', (err: any, addr: string) => {
         if (err) {
             console.error(err);
-            process.exit(1); 
+            process.exit(1);
         }
         app.log.info(`Server listening on ${addr}`);
     });
