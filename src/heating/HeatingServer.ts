@@ -105,8 +105,8 @@ export const startServer = async (config: Configuration, heaters: Heater[]) => {
 
             fs.writeFileSync(Path.resolve('ogrzewanie.config.json'), JSON.stringify(config, null, 4));
 
-            // clearInterval(<NodeJS.Timeout>loop);
-            // startLoop(config.interval, config.duration);
+            clearInterval(<NodeJS.Timeout>loop);
+            startLoop(config.interval, config.duration);
 
             res.code(200).send('OK');
         } else {
