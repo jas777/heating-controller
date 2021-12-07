@@ -5,17 +5,11 @@ import { startServer } from "./heating/HeatingServer";
 const heaters = [] as Heater[];
 
 const main = async () => {
-    const loadedConfig = await loadConfig();
+    const config = {...await loadConfig()} as Configuration;
 
-    if (!loadedConfig) {
+    if (!config) {
         console.log("Nieprawidłowa konfiguracja!");
         process.exit(1);
-    }
-
-    const config = {
-        interval: loadedConfig.interval,
-        duration: loadedConfig.duration,
-        heaters: loadedConfig.heaters
     }
 
     config.heaters.forEach((heaterNode) => {
