@@ -2,6 +2,7 @@ import fastify from "fastify";
 import Heater from "./Heater";
 import Configuration from "../config/Configuration";
 import * as fs from "fs";
+import * as Path from "path";
 
 let allHeaters: undefined | Map<number, Heater>;
 let loop: undefined | NodeJS.Timer;
@@ -102,7 +103,7 @@ export const startServer = async (config: Configuration, heaters: Heater[]) => {
             config.interval = data.interval;
             config.duration = data.duration;
 
-            fs.writeFileSync('../ogrzewanie.config.json', JSON.stringify(config, null, 4));
+            fs.writeFileSync(Path.resolve('ogrzewanie.config.json'), JSON.stringify(config, null, 4));
 
             res.code(200).send('OK');
         } else {
