@@ -1,11 +1,11 @@
-import { loadConfig } from "./config/Configuration";
+import Configuration, { loadConfig } from "./config/Configuration";
 import Heater, { isHeaterNode } from "./heating/Heater";
 import { startServer } from "./heating/HeatingServer";
 
 const heaters = [] as Heater[];
 
 const main = async () => {
-    const config = await loadConfig();
+    const config = (await loadConfig()) as Configuration;
 
     if (!config) {
         console.log("Nieprawidłowa konfiguracja!");
