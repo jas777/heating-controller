@@ -103,8 +103,10 @@ export const startServer = async (config: Configuration, heaters: Heater[]) => {
 
         if (data) {
 
-            if (data.duration > data.interval)
-                res.code(400).send({message: 'Duration longer than interval!'})
+            if (data.duration > data.interval) {
+                res.code(400).send({message: 'Duration longer than interval!'});
+                return;
+            }
 
             config.interval = data.interval * 1000 * 60;
             config.duration = data.duration * 1000 * 60;
