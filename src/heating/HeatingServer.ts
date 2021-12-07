@@ -1,11 +1,17 @@
 import fastify from "fastify";
 import Heater from "./Heater";
 import Configuration from "../config/Configuration";
+import * as fs from "fs";
 
 let allHeaters: undefined | Map<number, Heater>;
 let loop: undefined | NodeJS.Timer;
 let heatersAuto = [] as number[];
 let heatersManual = [] as number[];
+
+interface ConfigDTO {
+    duration: number;
+    interval: number;
+}
 
 export const startServer = async (config: Configuration, heaters: Heater[]) => {
 
@@ -86,7 +92,24 @@ export const startServer = async (config: Configuration, heaters: Heater[]) => {
         res.code(404).send({
             message: 'Heater not found!'
         });
-    })
+    });
+
+    app.put('/update', (req, res) => {
+
+        const data = req.body as ConfigDTO;
+
+        if (data) {
+            config.interval = data.interval;
+            config.duration = data.duration;
+
+            fs.writeFileSync('../ogrzewanie.config.json', JSON.stringify(config, null, 4));
+
+            res.code(200).send('OK');
+        } else {
+            res.code(400).send({ message: 'Invalid config data' });
+        }
+
+    });
 
     app.get('/config', (_req, res) => {
         res.code(200).send(config);
