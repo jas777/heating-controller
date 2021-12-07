@@ -100,8 +100,8 @@ export const startServer = async (config: Configuration, heaters: Heater[]) => {
         const data = req.body as ConfigDTO;
 
         if (data) {
-            config.interval = data.interval;
-            config.duration = data.duration;
+            config.interval = data.interval as number;
+            config.duration = data.duration as number;
 
             fs.writeFileSync(Path.resolve('ogrzewanie.config.json'), JSON.stringify(config, null, 4));
 
