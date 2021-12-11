@@ -5,3 +5,4 @@ yarn.lock
 ogrzewanie.config.json
 ssl/*.key
 ssl/*.pem
+ssl/*.crt

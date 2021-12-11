@@ -24,8 +24,8 @@ export const startServer = async (config: Configuration, heaters: Heater[]) => {
     const app = fastify({
         http2: true,
         https: {
-            key: path.join(__dirname, '..', 'ssl', 'key.key'),
-            cert: path.join(__dirname, '..', 'ssl', 'cert.pem')
+            key: path.join(__dirname, '..', 'ssl', 'key.pem'),
+            cert: path.join(__dirname, '..', 'ssl', 'server.crt')
         }
     });
 
