@@ -3,3 +3,5 @@ dist/
 yarn.lock
 *.log
 ogrzewanie.config.json
+ssl/*.key
+ssl/*.pem

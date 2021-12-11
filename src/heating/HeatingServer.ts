@@ -3,6 +3,7 @@ import Heater from "./Heater";
 import Configuration from "../config/Configuration";
 import * as fs from "fs";
 import * as Path from "path";
+import path from "path";
 
 let allHeaters: undefined | Map<number, Heater>;
 let loop: undefined | NodeJS.Timer;
@@ -20,7 +21,13 @@ export const startServer = async (config: Configuration, heaters: Heater[]) => {
 
     allHeaters.forEach(h => heatersAuto.push(h.gpio));
 
-    const app = fastify();
+    const app = fastify({
+        http2: true,
+        https: {
+            key: path.join(__dirname, '..', 'ssl', 'key.key'),
+            cert: path.join(__dirname, '..', 'ssl', 'cert.pem')
+        }
+    });
 
     app.register(require("fastify-cors"));
 
