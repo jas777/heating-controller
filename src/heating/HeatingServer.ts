@@ -21,13 +21,7 @@ export const startServer = async (config: Configuration, heaters: Heater[]) => {
 
     allHeaters.forEach(h => heatersAuto.push(h.gpio));
 
-    const app = fastify({
-        http2: true,
-        https: {
-            key: fs.readFileSync(path.join(__dirname, '..', '..', 'ssl', 'key.pem')),
-            cert: fs.readFileSync(path.join(__dirname, '..', '..', 'ssl', 'server.crt'))
-        }
-    });
+    const app = fastify();
 
     app.register(require("fastify-cors"));
 
